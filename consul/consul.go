@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+    "strconv"
 	"strings"
 	"os"
 	"github.com/gliderlabs/registrator/bridge"
@@ -83,6 +84,11 @@ func (r *ConsulAdapter) Register(service *bridge.Service) error {
 	registration.Tags = service.Tags
 	registration.Address = service.IP
 	registration.Check = r.buildCheck(service)
+//    if enableTagOverride, err := strconv.ParseBool(service.Attrs["enable_tag_override"]); err == nil {
+//        log.Println("Enable tag override parsed: ", enableTagOverride)
+//        registration.EnableTagOverride = enableTagOverride
+//    }
+    registration.EnableTagOverride = true
 	return r.client.Agent().ServiceRegister(registration)
 }
 
